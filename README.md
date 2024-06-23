@@ -4,7 +4,7 @@
 EDA (exploratory data analysis) results can be more structured.
 
 EDAHub provides a side screen in JupyterLab to summarize your data, making it easier and quicker to revisit.
-![Screenshot](assets/screenshot.png)
+![Screenshot](assets/readme_example.png)
 
 
 ## Why this is useful?
