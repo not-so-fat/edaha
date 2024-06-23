@@ -3,7 +3,7 @@ import threading
 
 import pandas
 
-from ..widgets import EDAHAWidget
+from ..widgets import EDAHubWidget
 from . import stats_calculator
 from .vis import histogram
 
@@ -11,7 +11,7 @@ from .vis import histogram
 STATUS_COLUMNS = ["name", "#rows", "#cols", "status", "created"]
 
 
-class EDAHA:
+class EDAHub:
     def __init__(self, name=None):
         self.name = name or _get_name()
         self.tables = {}
@@ -19,7 +19,7 @@ class EDAHA:
         self.stats_tables = {}
         self.histograms = {}
         self.eda_thread = None
-        self.widget = EDAHAWidget(self)
+        self.widget = EDAHubWidget(self)
 
     def add_table(self, name, df, overwrite=False):
         if not overwrite and name in self.tables:

@@ -4,20 +4,22 @@ from IPython.display import display, HTML
 from ..logic.vis import histogram
 
 
-class EDAHAWidgetColumnSummary:
+class EDAHubWidgetColumnSummary:
     def __init__(self):
         self.output = widgets.Accordion()
 
-    def update(self, edaha):
-        table_names = edaha.get_table_names()
+    def update(self, edahub):
+        table_names = edahub.get_table_names()
         contents = []
         titles = []
         for table_name in table_names:
             stats = widgets.Output(layout=widgets.Layout(width='100%'))
             histogram = widgets.Output(layout=widgets.Layout(width='100%'))
-            select_chart, filter_text = self._get_histogram_selection(table_name, edaha, histogram)
+            select_chart, filter_text = self._get_histogram_selection(table_name, edahub, histogram)
+            if select_chart.options:
+                select_chart.value = select_chart.options[0]
             with stats:
-                display(HTML(self._get_table_html(table_name, edaha.stats_tables[table_name])))
+                display(HTML(self._get_table_html(table_name, edahub.stats_tables[table_name])))
             contents.append(
                 widgets.VBox(
                     [
@@ -35,8 +37,8 @@ class EDAHAWidgetColumnSummary:
     def _get_table_html(self, table_name, table_df):
         return table_df.to_html()
 
-    def _get_histogram_selection(self, table_name, edaha, histogram):
-        available_columns = list(edaha.histograms[table_name].keys()) if table_name in edaha.histograms \
+    def _get_histogram_selection(self, table_name, edahub, histogram):
+        available_columns = list(edahub.histograms[table_name].keys()) if table_name in edahub.histograms \
             else []
         select_chart = widgets.Select(
             options=available_columns,
@@ -51,7 +53,7 @@ class EDAHAWidgetColumnSummary:
 
         def update_chart(change):
             column_name = change['new']
-            chart = edaha.histograms[table_name].get(column_name)
+            chart = edahub.histograms[table_name].get(column_name)
             if chart:
                 with histogram:
                     histogram.clear_output()

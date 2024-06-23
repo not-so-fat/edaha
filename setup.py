@@ -8,14 +8,14 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="edaha",
+    name="edahub",
     version="0.0.0",
     author="@not-so-fat",
     author_email="conjurer.not.so.fat@gmail.com",
     description="T.B.A.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/not-so-fat/edaha",
+    url="https://github.com/not-so-fat/edahub",
     install_requires=requirements,
     packages=setuptools.find_packages(),
     classifiers=[
