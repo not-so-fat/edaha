@@ -16,8 +16,7 @@ class EDAHubWidgetColumnSummary:
             stats = widgets.Output(layout=widgets.Layout(width='100%'))
             histogram = widgets.Output(layout=widgets.Layout(width='100%'))
             select_chart, filter_text = self._get_histogram_selection(table_name, edahub, histogram)
-            if select_chart.options:
-                select_chart.value = select_chart.options[0]
+
             with stats:
                 display(HTML(self._get_table_html(table_name, edahub.stats_tables[table_name])))
             contents.append(
@@ -29,6 +28,7 @@ class EDAHubWidgetColumnSummary:
                     ]
                 )
             )
+
             titles.append(table_name)
         self.output.children = contents
         for i, title in enumerate(titles):
@@ -43,6 +43,7 @@ class EDAHubWidgetColumnSummary:
         select_chart = widgets.Select(
             options=available_columns,
             description='Select Chart:',
+            value=None,
             disabled=False
         )
         filter_text = widgets.Text(

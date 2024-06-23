@@ -19,7 +19,7 @@ def calc_column_stat(df):
     def _calc_stat(column, df_size):
         unique_count = len(get_unique_values(df, column))
         logger.info("...calculating {} (dtype: {})".format(column, df.dtypes[column]))
-        return pandas.DataFrame(
+        ans = pandas.DataFrame(
             {
                 "column_name": [column],
                 "dtype": df.dtypes[column],
@@ -35,7 +35,11 @@ def calc_column_stat(df):
             },
             columns=output_column_names
         )
-    return pandas.concat([_calc_stat(c, df_size) for c in df.columns], axis=0, ignore_index=True)
+        return ans[ans.columns[ans.notna().any()]]
+    ans = pandas.concat([_calc_stat(c, df_size) for c in df.columns], axis=0, ignore_index=True)
+    output_column_names = [c for c in output_column_names if c in ans.columns]
+    ans = ans[output_column_names]
+    return ans
 
 
 def get_unique_values(df, columns):

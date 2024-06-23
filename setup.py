@@ -9,10 +9,10 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="edahub",
-    version="0.0.0",
+    version="0.0.1",
     author="@not-so-fat",
     author_email="conjurer.not.so.fat@gmail.com",
-    description="T.B.A.",
+    description="EDAHub helps structure exploratory data analysis (EDA) results.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/not-so-fat/edahub",
