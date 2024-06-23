@@ -1,4 +1,5 @@
 pandas
+altair
 jupyterlab
 jupyterlab-widgets
 ipywidgets
