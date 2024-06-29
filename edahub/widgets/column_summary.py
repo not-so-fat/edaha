@@ -11,7 +11,6 @@ class EDAHubWidgetColumnSummary:
     def update(self, edahub):
         table_names = edahub.get_table_names()
         contents = []
-        titles = []
         for table_name in table_names:
             stats = widgets.Output(layout=widgets.Layout(width='100%'))
             histogram = widgets.Output(layout=widgets.Layout(width='100%'))
@@ -29,9 +28,8 @@ class EDAHubWidgetColumnSummary:
                 )
             )
 
-            titles.append(table_name)
         self.output.children = contents
-        for i, title in enumerate(titles):
+        for i, title in enumerate(table_names):
             self.output.set_title(i, title)
 
     def _get_table_html(self, table_name, table_df):

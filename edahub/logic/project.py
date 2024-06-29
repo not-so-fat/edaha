@@ -12,6 +12,9 @@ STATUS_COLUMNS = ["name", "#rows", "#cols", "status", "created"]
 
 
 class EDAHub:
+    """
+    EDA with a widget at the side bar on JupyterLab
+    """
     def __init__(self, name=None):
         self.name = name or _get_name()
         self.tables = {}
@@ -19,9 +22,16 @@ class EDAHub:
         self.stats_tables = {}
         self.histograms = {}
         self.eda_thread = None
+        self.custom_objs = {}
         self.widget = EDAHubWidget(self)
 
     def add_table(self, name, df, overwrite=False):
+        """
+        Initiate EDA for a pandas.DataFrame and add the result into the widget
+        Args:
+            name (str): name of data
+            df (pandas.DataFrame): data you want to perform EDA to get summary
+        """
         if not overwrite and name in self.tables:
             raise Exception(f"name={name} has been already registered. Use a different name or the option `overwrite=True`")
         now = datetime.now().replace(microsecond=0)
@@ -41,8 +51,24 @@ class EDAHub:
         self._add_histograms(name, df)
 
     def get_table_names(self):
+        """
+        Returns:
+            list[str] all the names of data registered
+        """
         #TODO: sort table names based on created
         return list(self.tables.keys())
+
+    def add_chart(self, group_name, chart):
+        """
+        Add a chart into the widget on the tab named "Charts"
+        Args:
+            group_name (str): Identifier of group in Accordion widget in "Charts" tab
+            chart: Object you want to put on the widget, displayed by `display(chart)`
+        """
+        if group_name not in self.custom_objs:
+            self.custom_objs[group_name] = []
+        self.custom_objs[group_name].append(chart)
+        self.widget.update(None)
 
     def _get_schema(self, df):
         return pandas.DataFrame({
