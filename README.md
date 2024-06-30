@@ -20,7 +20,7 @@ pip install edahub
 ```
 
 ### Whole example
-![Example notebook](example/example_notebook.ipynb) would help you to understand how it works.
+![Example notebook](examples/edahub_example.ipynb) would help you to understand how it works.
 
 ### Quick start
 
@@ -46,3 +46,10 @@ eda.add_chart("<name of section>", chart2)
 ```
 It will display your chart on the tab "Charts"
 
+You can save widget as html file, you can open it on the browser independently on Jupyter.
+
+```
+eda.export_html("edahub_export.html")
+```
+
+NOTE: I observe instability in updating output of widgets. When output doesn't look right, please click "Update" button to update the widget.

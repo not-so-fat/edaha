@@ -2,6 +2,8 @@ from datetime import datetime
 import threading
 
 import pandas
+import ipywidgets
+from ipywidgets import embed
 
 from ..widgets import EDAHubWidget
 from . import stats_calculator
@@ -46,7 +48,7 @@ class EDAHub:
             self.status_table = new_row
         self.tables[name] = df
         self.stats_tables[name] = self._get_schema(df)
-        self.widget.update(None)
+        self.widget.update(None, ["Summary", "ColumnSummary"])
         self._compute_stats(name, df)
         self._add_histograms(name, df)
 
@@ -58,6 +60,9 @@ class EDAHub:
         #TODO: sort table names based on created
         return list(self.tables.keys())
 
+    def get_column_names(self, table_name):
+        return self.stats_tables[table_name]["column_name"].to_list()
+
     def add_chart(self, group_name, chart):
         """
         Add a chart into the widget on the tab named "Charts"
@@ -68,7 +73,11 @@ class EDAHub:
         if group_name not in self.custom_objs:
             self.custom_objs[group_name] = []
         self.custom_objs[group_name].append(chart)
-        self.widget.update(None)
+        self.widget.update(None, ["Charts"])
+
+    def export_html(self, filepath):
+        widget_for_export = self.widget.get_widget_for_export()
+        embed.embed_minimal_html(filepath, widget_for_export, title=f'EDAHub({self.name})')
 
     def _get_schema(self, df):
         return pandas.DataFrame({
@@ -80,7 +89,7 @@ class EDAHub:
         def target():
             self.stats_tables[name] = stats_calculator.calc_column_stat(df)
             self._update_status(name, "generating histograms")
-            self.widget.update(None)
+            self.widget.update(None, ["ColumnSummary"])
         
         self.eda_thread = threading.Thread(target=target)
         self.eda_thread.start()
@@ -92,7 +101,7 @@ class EDAHub:
                 for c in self.tables[name].columns
             }
             self._update_status(name, "done")
-            self.widget.update(None)
+            self.widget.update(None, ["ColumnSummary"])
         
         self.eda_thread = threading.Thread(target=target)
         self.eda_thread.start()

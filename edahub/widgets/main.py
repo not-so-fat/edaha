@@ -33,10 +33,17 @@ class EDAHubWidget:
         with self.sidecar:
             display(widgets.VBox([self.update_button, self.home]))
 
-    def update(self, _):
-        self.summary.update(self.edahub)
-        self.column_summary.update(self.edahub)
-        self.custom.update(self.edahub)
+    def update(self, _, components=["Summary", "ColumnSummary", "Charts"]):
+        if "Summary" in components:
+            self.summary.update(self.edahub)
+        if "ColumnSummary" in components:
+            self.column_summary.update(self.edahub)
+        if "Charts" in components:
+            self.custom.update(self.edahub)
+
+    def get_widget_for_export(self):
+        self.column_summary.reset_search_box()
+        return self.home
 
 
 class EDAHubWidgetSummary:
